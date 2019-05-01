@@ -1,7 +1,6 @@
 # quantitative-investment-learning
 使用Python进行量化投资的学习报告
 
-
 **Python量化投资学习报告**
 
 `CatsJuice` 编辑于 `2019-4-26`
@@ -21,7 +20,9 @@
 - [2. **热点获取**](#2-热点获取)
     - [2.1. **东方财富**](#21-东方财富)
 - [3. **数据分析**](#3-数据分析)
-    - [3.1. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数](#31-胡立阳股票投资100招-由价量关系来为个股打分数)
+    - [3.1. **换手率分析**](#31-换手率分析)
+    - [3.2. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数](#32-胡立阳股票投资100招-由价量关系来为个股打分数)
+
 
 
 
@@ -387,7 +388,95 @@ git clone https://github.com/CatsJuice/eastmoney-yaowen-keyword.git
 
 在证券投资中， 有很多技术层面的投资策略， 如各种公式， 通过策略可以筛选出股票， 但并不意味着一定能盈利， 而量化投资可以验证这一策略的可靠性， 接下来就是我对若干策略的验证；
 
-## 3.1. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数
+## 3.1. **换手率分析**
+
+分析**连续处于低换手率**的股票， 脱离低换手率后， 出现**连续处于高换手率**， 判断2个时期的**收盘价**均价， 分析满足这一特征的股票的价格是否会上涨；
+
+程序设计的思路如下
+- 迭代日线数据文件
+- 判断是否是连续高换手率
+- 判断是否在连续高换手率后出现连续低换手率
+- 结果展示
+
+**注:** 因为数据文件是按日期的倒序排序的， 所以分析迭代时， 先判断是否出现连续高换手率
+
+核心代码如下：
+```
+high = []
+low = []
+for row in arr:
+    rate = row[10]
+    if rate == "None":
+        high = []
+        low = []
+        continue
+    if rate == 0:
+        if len(high) >= self.min_days and len(low) >= self.min_days:
+            dic = {'high': high, 'low': low}
+            self.res.append(dic)
+            high = []
+            low = []
+        continue
+    rate = float(rate)
+    # 4. 判断是否是 高 换手率
+    if rate >= self.border_rate:   
+        # 4.3 判断是否是: 连续高 ->连续低 -> 结束连续低
+        if len(low) >= self.min_days:
+            # 符合条件， 写入
+            dic = {'high': high, 'low': low}
+            self.res.append(dic)
+            high = []
+            low = []
+        elif len(low) > 0:      # 连续低中有值
+            # 不满足连续 低， 重置
+            high = []
+            low = []
+        high.append(row)
+    elif len(high) < self.min_days:     # 是低换手率， 判断是否前面是连续高换手率
+        # 4.1 前面不是连续的高换手率， 重置高换手率数组
+        high = []
+    else:
+        # 4.2 前面是连续高换手率， 地换手率写入
+        low.append(row)
+    
+    # 判断日期是否已达到最后
+    if row[0] <= self.end_date:
+        # 判断是否满足条件
+        if len(high) >= self.min_days and len(low) >= self.min_days:
+            dic = {'high': high, 'low': low}
+            self.res.append(dic)
+            high = []
+            low = []
+        break
+```
+
+简易流程图如下：
+
+![流程图](https://catsjuice.cn/index/src/markdown/stock/mind201905012008.jpg "换手率程序设计流程图")
+
+[点此查看流程图原图](https://catsjuice.cn/index/src/markdown/stock/mind201905012008_origin.png)
+
+程序可调整参数如下：
+
+No | param | type | meaning | demo
+:--:|:--:|:--: |:--: |:--:
+1 | `file_path_prefix` | `str` | 日线数据目录前缀 | `'F:\\files\\sharesDatas\\kline\\'`
+2 | `min_days` |  `int` | 最小连续天数 | `10`
+3 | `border_rate` | `float` | 换手率高低边界 | `2`
+4 | `end_date` | `str` | 统计的最早日期 | `'2018-12-28'`
+
+程序运行结果截图如下：201905012052.png
+
+![screenshot](https://catsjuice.cn/index/src/markdown/stock/201905012052.png)
+
+完整项目地址：[https://github.com/CatsJuice/low-switch-hand-rate](https://github.com/CatsJuice/low-switch-hand-rate)
+
+或者：
+```
+git clone https://github.com/CatsJuice/low-switch-hand-rate.git
+```
+
+## 3.2. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数
 
 
 胡立阳根据股票的`价量关系`对股票进行打分（第21招）， 而其打分的依据如下：
