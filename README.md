@@ -5,9 +5,10 @@
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-02`
+上一次更新： `2019-05-03 15:24`
 
 **CONTENTS:**
+
 
 
 
@@ -27,8 +28,12 @@
         - [3.2.1. **概念**](#321-概念)
         - [3.2.2. **指标用法**](#322-指标用法)
         - [3.2.3. **公式**](#323-公式)
-        - [3.2.4. **参数说明**](#324-参数说明)
+        - [3.2.4. **程序设计**](#324-程序设计)
+        - [3.2.5. **参数说明**](#325-参数说明)
+        - [3.2.6. **测试结果**](#326-测试结果)
     - [3.3. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数](#33-胡立阳股票投资100招-由价量关系来为个股打分数)
+
+
 
 
 
@@ -168,7 +173,7 @@ No. | key_name | meaning
 18 | TURNOVER | 成交额
 19 | VOLUME | 成交量
 20 | WB | 委比
-所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607	`， 所以如下请求：
+所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607 `， 所以如下请求：
 ```
 http://quotes.money.163.com/hs/service/diyrank.php?host=http%3A%2F%2Fquotes.money.163.com%2Fhs%2Fservice%2Fdiyrank.php&page=0&query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2CFIVE_MINUTE%2COPEN%2CYESTCLOSE%2CHIGH%2CLOW%2CVOLUME%2CTURNOVER%2CHS%2CLB%2CWB%2CZF%2CPE%2CMCAP%2CTCAP%2CMFSUM%2CMFRATIO.MFRATIO2%2CMFRATIO.MFRATIO10%2CSNAME%2CCODE%2CANNOUNMT%2CUVSNEWS&sort=PERCENT&order=desc&count=3607&type=query
 ```
@@ -340,15 +345,16 @@ if __name__ == '__main__':
     controller = Controller(url=url, kline_filepath=kline_filepath, codelist_filepath=codelist_filepath, date='20190428')
     controller.start()
 ```
-> 完整源码
-> 
-> 位于[https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
-> 
-> 或者通过 `git clone https://github.com/CatsJuice/netease-stock-day-line.git` 
+项目地址: [https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
+
+`或者:`
+```
+git clone https://github.com/CatsJuice/netease-stock-day-line.git
+``` 
 
 **网易财经财务数据**
 
-网页url为[http://quotes.money.163.com/f10/zycwzb_601318.html#01c01](http://quotes.money.163.com/f10/zycwzb_601318.html#01c01)， 可以看到同交易日线数据一样， 这里有一个下载数据的按钮， 对应`盈利能力`， `偿还能力`等， 而这里直接通过开发者工具审查元素， 即可看到超链接的`href`：`/service/zycwzb_601318.html?type=report&part=ylnl`， 很快， 就能拿到完整的`url`， 然后操作同网易日线数据， 源码同样位于[https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
+网页url为[http://quotes.money.163.com/f10/zycwzb_601318.html#01c01](http://quotes.money.163.com/f10/zycwzb_601318.html#01c01)， 可以看到同交易日线数据一样， 这里有一个下载数据的按钮， 对应`盈利能力`， `偿还能力`等， 而这里直接通过开发者工具审查元素， 即可看到超链接的`href`：`/service/zycwzb_601318.html?type=report&part=ylnl`， 很快， 就能拿到完整的`url`， 然后操作同网易日线数据， 项目地址同样位于[https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
 
 
 
@@ -522,7 +528,21 @@ TYP赋值:(最高价+最低价+收盘价)/3
 
 程序中我采用的是**公式二**， 生成的CCI单独写入`.csv`文件
 
-### 3.2.4. **参数说明**
+### 3.2.4. **程序设计**
+
+**总共设计了4个类如下：**
+
+- `CCIAnalyze(object)` &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;CCI分析类
+    - `analyze_all(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析所有股票
+    - `analyze_one(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析一只股票
+    - `test_buy(self)` &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略一：在下文说明）
+    - `test_buy_2(self)` &emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略二：在下文说明）
+- `CCICalculate(object)` &emsp;&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;根据[3.2.3. **公式**](#323-公式)中的公式二计算CCI
+- `CCICalculate_2(object)`&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;根据[3.2.3. **公式**](#323-公式)中的公式一计算CCI
+- `BuyInfo(object)`&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;购买辅助类
+
+
+### 3.2.5. **参数说明**
 
 id | param | type | default | mean | demo | necessary
 :--: | :--: | :--: | :--: | :--: |:--: | :--:
@@ -537,6 +557,22 @@ id | param | type | default | mean | demo | necessary
 ```
 git clone https://github.com/CatsJuice/stock-cci
 ```
+
+### 3.2.6. **测试结果**
+
+在进行测试购买时， 采用的策略有2种，如下：
+
+**策略一：**
+
+对应`CCIAnalyze(object)`中的`test_buy(self)`方法， 当`CCI`向下突破`-100`时， 后一交易日**买入**， 等到`CCI`向上突破`100`时， 后一交易日**卖出**(由于计算出当日的CCI， 当日已不可**买入/卖出**，所以计算后一交易日**买入/卖出**)
+
+**策略二：**
+
+对应`CCIAnalyze(object)`中的`test_buy_2(self)`方法, 当`CCI`向下突破`-100`时， 继续观察， 等到向下达到第一个峰值时， 后一交易日**买入**，等到`CCI`向上突破`100`时， 继续观察， 等到向上达到第一个峰值时， 后一交易日**卖出**（和策略一一样， 计算出`CCI`后只能后一日买入， 而策略二不同的是， 要判断达到第一个峰值， 必须确定峰值后一日CCI降低， 所以测试时， 购买的是峰值的后`第2个`交易日）
+
+经过若干次测试，分别使用的数据是`2019-01-01 ~ 2019-04-26`, `2018-01-01 ~ 2019-04-26`, `2017-01-01 ~ 2019-04-26`, 测试的结果, 购买策略一的收益率大概为`56%`, 可见这个指标有一定依据， 但是盈利的几率不够高; 而策略二的收益率大概为`57%`, 较策略一高一点， 但是依旧无法将其作为购买的唯一指标， 以下是某次运行结果的部分截图：
+
+![CCI指标测试截图](https://catsjuice.cn/index/src/markdown/stock/201905031521.png "CCI指标测试截图")
 
 ## 3.3. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数
 
