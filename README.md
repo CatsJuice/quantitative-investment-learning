@@ -1,12 +1,10 @@
 # quantitative-investment-learning
 使用Python进行量化投资的学习报告
-
-
 **Python量化投资学习报告**
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-03 15:45`
+上一次更新： `2019-05-04 14:29`
 
 **CONTENTS:**
 
@@ -183,7 +181,7 @@ No. | key_name | meaning
 20 | WB | 委比
 
 
-&emsp;&emsp;所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607 `， 所以如下请求：
+&emsp;&emsp;所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607	`， 所以如下请求：
 ```
 http://quotes.money.163.com/hs/service/diyrank.php?host=http%3A%2F%2Fquotes.money.163.com%2Fhs%2Fservice%2Fdiyrank.php&page=0&query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2CFIVE_MINUTE%2COPEN%2CYESTCLOSE%2CHIGH%2CLOW%2CVOLUME%2CTURNOVER%2CHS%2CLB%2CWB%2CZF%2CPE%2CMCAP%2CTCAP%2CMFSUM%2CMFRATIO.MFRATIO2%2CMFRATIO.MFRATIO10%2CSNAME%2CCODE%2CANNOUNMT%2CUVSNEWS&sort=PERCENT&order=desc&count=3607&type=query
 ```
@@ -532,7 +530,7 @@ TYP赋值:(最高价+最低价+收盘价)/3
 ```
 **公式二：**
 
-![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png "cci")
+![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png?20100504 "cci")
 
 该公式摘录于[https://www.joinquant.com/view/community/detail/219](https://www.joinquant.com/view/community/detail/219)
 
