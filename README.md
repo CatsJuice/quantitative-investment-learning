@@ -530,7 +530,7 @@ TYP赋值:(最高价+最低价+收盘价)/3
 ```
 **公式二：**
 
-![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png?20100504 "cci")
+![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png?20100504_2 "cci")
 
 该公式摘录于[https://www.joinquant.com/view/community/detail/219](https://www.joinquant.com/view/community/detail/219)
 
