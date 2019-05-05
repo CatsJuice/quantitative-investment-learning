@@ -1,14 +1,14 @@
 # quantitative-investment-learning
 使用Python进行量化投资的学习报告
+
+
 **Python量化投资学习报告**
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-04 14:29`
+上一次更新： `2019-05-05 19:28`
 
 **CONTENTS:**
-
-
 
 
 
@@ -534,7 +534,13 @@ TYP赋值:(最高价+最低价+收盘价)/3
 
 该公式摘录于[https://www.joinquant.com/view/community/detail/219](https://www.joinquant.com/view/community/detail/219)
 
-程序中我采用的是**公式二**， 生成的CCI单独写入`.csv`文件
+程序中我采用的是**公式二**， 生成的 `CCI` 指标追加到日线文件中， 在相应日期后增加 `CCI` 的值， 在 `Python` 中对 `csv` 文件进行增加列的方法， 在网上可找到的方法较少， 以下为一个提供了多种解决方案的， 较为完善的链接: [https://stackoverflow.com/questions/11070527/how-to-add-a-new-column-to-a-csv-file](https://stackoverflow.com/questions/11070527/how-to-add-a-new-column-to-a-csv-file), 我使用的是 `pandas` 库， 关键代码如下：
+```
+df = pd.read_csv(filename, encoding='gbk')
+df['cci'] = ''
+for index, row in pd.iterrows():
+    df.loc[index, 'cci'] = cci
+```
 
 ### 3.2.4. **程序设计**
 
