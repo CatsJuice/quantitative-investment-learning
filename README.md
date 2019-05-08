@@ -1,11 +1,10 @@
 # quantitative-investment-learning
 使用Python进行量化投资的学习报告
-
 **Python量化投资学习报告**
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-07 23:13`
+上一次更新： `2019-05-08 14:19`
 
 **CONTENTS:**
 
@@ -721,7 +720,19 @@ id | param | type | mean | demo | necessary
 
 ![ma10的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905072311.png 'ma10的详情结果')
 
-从更详细的结果可以看到， 无论盈利或亏损， 超过 1 元的概率都不大， 但是亏损的时候超过 1 元的概率比盈利大
+**对于 `ma20`:**
+
+![ma20的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081102.png 'ma20的详情结果')
+
+**对于 `ma30`:**
+
+![ma30的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081112.png 'ma30的详情结果')
+
+**对于 `ma60`:**
+
+![ma60的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081409.png 'm60的详情结果')
+
+从更详细的结果可以看到， 无论盈利或亏损， 超过 1 元的概率都不大， 但是亏损的时候超过 1 元的概率比盈利大； 更有趣的是， 当 ma的计算天数越多， 盈利的几率越大， 由于一般看盘软件中仅提供了上述这些均线（`MA5`, `MA10`, `MA20`, `MA30`, `MA60`）, 所以这里不再多更高的天数进行测试； 虽然天数越大时， 盈利几率越高， 但是从更细节数据可以看到， 盈利的情况大于1元的概率始终在 `10% ~ 15%`, 而亏损时超过 1 元的概率却表现出和天数正相关的趋势， 并且从 `24%` 跳跃到高达 `50%`
 
 ### 3.4.7. **Source Code**
 
