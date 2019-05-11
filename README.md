@@ -1,67 +1,75 @@
 # quantitative-investment-learning
-使用Python进行量化投资的学习报告
 
+使用Python进行量化投资的学习报告
 **Python量化投资学习报告**
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-09 13:09`
+上一次更新： `2019-05-11 10:17`
 
 **CONTENTS:**
 
-
-
-
-
 - [1. **数据抓取**](#1-数据抓取)
-    - [1.1. **通过第三方数据平台直接调用api**](#11-通过第三方数据平台直接调用api)
-        - [1.1.1. **TuShare(挖地兔)**](#111-tushare挖地兔)
-        - [1.1.2. **其他平台**](#112-其他平台)
-    - [1.2. **使用爬虫抓取**](#12-使用爬虫抓取)
-        - [1.2.1. **新浪财经**](#121-新浪财经)
-        - [1.2.2. **网易财经**](#122-网易财经)
-        - [1.2.3. **东方财富**](#123-东方财富)
+  - [1.1. **通过第三方数据平台直接调用api**](#11-通过第三方数据平台直接调用api)
+    - [1.1.1. **TuShare(挖地兔)**](#111-tushare挖地兔)
+      - [1.1.1.1. **A. 概述**](#1111-a-概述)
+      - [1.1.1.2. **B. 基本使用**](#1112-b-基本使用)
+    - [1.1.2. **其他平台**](#112-其他平台)
+      - [1.1.2.1. **Win.d**](#1121-wind)
+      - [1.1.2.2. **优矿**](#1122-优矿)
+  - [1.2. **使用爬虫抓取**](#12-使用爬虫抓取)
+    - [1.2.1. **新浪财经**](#121-新浪财经)
+      - [1.2.1.1. **获取所有股票代码**（这里只考虑沪深A股）](#1211-获取所有股票代码这里只考虑沪深a股)
+      - [1.2.1.2. **获取日线数据**](#1212-获取日线数据)
+      - [1.2.1.3. **获取财务数据**](#1213-获取财务数据)
+    - [1.2.2. **网易财经**](#122-网易财经)
+      - [1.2.2.1. **获取所有股票代码**（这里只考虑沪深A股）](#1221-获取所有股票代码这里只考虑沪深a股)
+      - [1.2.2.2. **获取日线数据**](#1222-获取日线数据)
+      - [1.2.2.3. **网易财经财务数据**](#1223-网易财经财务数据)
+    - [1.2.3. **东方财富**](#123-东方财富)
+      - [1.2.3.1. **股票信息列表**](#1231-股票信息列表)
+      - [1.2.3.2. **交易数据, 财务数据**](#1232-交易数据-财务数据)
 - [2. **热点获取**](#2-热点获取)
-    - [2.1. **东方财富**](#21-东方财富)
+  - [2.1. **东方财富**](#21-东方财富)
 - [3. **数据分析**](#3-数据分析)
-    - [3.1. **换手率分析**](#31-换手率分析)
-    - [3.2. **CCI指标**](#32-cci指标)
-        - [3.2.1. **概念**](#321-概念)
-        - [3.2.2. **指标用法**](#322-指标用法)
-        - [3.2.3. **公式**](#323-公式)
-        - [3.2.4. **程序设计**](#324-程序设计)
-        - [3.2.5. **参数说明**](#325-参数说明)
-        - [3.2.6. **测试结果**](#326-测试结果)
-    - [3.3. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数](#33-胡立阳股票投资100招-由价量关系来为个股打分数)
-        - [3.3.1. **概念**](#331-概念)
-        - [3.3.2. **程序设计**](#332-程序设计)
-        - [3.3.3. **结果**](#333-结果)
-        - [3.3.4. **Source Code**](#334-source-code)
-    - [3.4. **移动平均线分析**](#34-移动平均线分析)
-        - [3.4.1. **概念**](#341-概念)
-        - [3.4.2. **计算**](#342-计算)
-        - [3.4.3. **程序设计**](#343-程序设计)
-        - [3.4.4. **参数说明**](#344-参数说明)
-        - [3.4.5. **购买策略分析**](#345-购买策略分析)
-            - [3.4.5.1. **策略一： '老太太选股法' 一根均线打天下**](#3451-策略一-老太太选股法-一根均线打天下)
-            - [3.4.5.2. **策略二：'黄金交叉'和'死亡交叉'**](#3452-策略二黄金交叉和死亡交叉)
-        - [3.4.6. **分析结果**](#346-分析结果)
-            - [3.4.6.1. **老太太选股法**](#3461-老太太选股法)
-            - [3.4.6.2. **'黄金交叉'和'死亡交叉'**](#3462-黄金交叉和死亡交叉)
-        - [3.4.7. **Source Code**](#347-source-code)
-
-
-
-
-
-
+  - [3.1. **换手率分析**](#31-换手率分析)
+  - [3.2. **CCI指标**](#32-cci指标)
+    - [3.2.1. **概念**](#321-概念)
+    - [3.2.2. **指标用法**](#322-指标用法)
+    - [3.2.3. **公式**](#323-公式)
+      - [**公式一：**](#公式一)
+      - [**公式二：**](#公式二)
+    - [3.2.4. **程序设计**](#324-程序设计)
+    - [3.2.5. **参数说明**](#325-参数说明)
+    - [3.2.6. **测试结果**](#326-测试结果)
+  - [3.3. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数](#33-胡立阳股票投资100招-由价量关系来为个股打分数)
+    - [3.3.1. **概念**](#331-概念)
+    - [3.3.2. **程序设计**](#332-程序设计)
+    - [3.3.3. **结果**](#333-结果)
+    - [3.3.4. **Source Code**](#334-source-code)
+  - [3.4. **移动平均线分析**](#34-移动平均线分析)
+    - [3.4.1. **概念**](#341-概念)
+    - [3.4.2. **计算**](#342-计算)
+    - [3.4.3. **程序设计**](#343-程序设计)
+    - [3.4.4. **参数说明**](#344-参数说明)
+    - [3.4.5. **购买策略分析**](#345-购买策略分析)
+      - [3.4.5.1. **策略一： '老太太选股法' 一根均线打天下**](#3451-策略一-老太太选股法-一根均线打天下)
+      - [3.4.5.2. **策略二：'黄金交叉'和'死亡交叉'**](#3452-策略二黄金交叉和死亡交叉)
+    - [3.4.6. **分析结果**](#346-分析结果)
+      - [3.4.6.1. **老太太选股法**](#3461-老太太选股法)
+      - [3.4.6.2. **'黄金交叉'和'死亡交叉'**](#3462-黄金交叉和死亡交叉)
+    - [3.4.7. **Source Code**](#347-source-code)
+  - [3.5. **分时数据 成交手分析**](#35-分时数据-成交手分析)
+    - [3.5.1. **基本概念**](#351-基本概念)
+    - [3.5.2. ****](#352-)
 
 # 1. **数据抓取**
 
 ## 1.1. **通过第三方数据平台直接调用api**
+
 ### 1.1.1. **TuShare(挖地兔)**
 
-**A. 概述**
+#### 1.1.1.1. **A. 概述**
 
 > **Tushare**是一个免费、开源的python财经数据接口包。主要实现对股票等金融数据从**数据采集**、**清洗加工** 到**数据存储**的过程，能够为金融分析人员提供快速、整洁、和多样的便于分析的数据，为他们在数据获取方面极大地减轻工作量，使他们更加专注于策略和模型的研究与实现上。
 
@@ -69,26 +77,29 @@
 
 ToShare Pro: [https://tushare.pro/](https://tushare.pro/)
 
-**B. 基本使用**
+#### 1.1.1.2. **B. 基本使用**
 
-**使用前提：**
+**使用前提**:
 
 - 安装Python
 - 安装Pandas, lxml
 
-**下载安装：**
+**下载安装**:
 
 - 方式1：`pip install tushare`
 - 方式2：访问[https://pypi.python.org/pypi/Tushare/](https://pypi.python.org/pypi/Tushare/)下载安装
 
-**使用：**
-以[历史行情](http://tushare.org/trading.html#id2)接口为例， 如下调用：
-```
+**使用**:
+
+以[历史行情](http://tushare.org/trading.html#id2)接口为例， 如下调用:
+
+```python
 import tushare as ts
 
 ts.get_hist_data('600848')      #一次性获取全部日k线数据
 ```
-**结果显示：**
+
+**结果显示**:
 
 ![历史行情接结果返回](https://catsjuice.cn/index/src/markdown/stock/201904262245.png "历史行情结果")
 
@@ -96,14 +107,13 @@ ts.get_hist_data('600848')      #一次性获取全部日k线数据
 
 ### 1.1.2. **其他平台**
 
-**Win.d**
+#### 1.1.2.1. **Win.d**
 
 官网: [https://www.wind.com.cn/Default.html](https://www.wind.com.cn/Default.html)
 >中国市场的精准金融数据服务供应商，为量化投资与各类金融业务系统提供准确、及时、完整的落地数据，内容涵盖
 股票、债券、基金、衍生品、指数、宏观行业等各类金融市场数据，助您运筹帷幄，决胜千里
 
-
-**优矿**
+#### 1.1.2.2. **优矿**
 
 官网: [https://uqer.io/](https://uqer.io/)
 > 提供各类资产的财务、因子、主题、宏观行业特色大数据，以及量化场景下的PIT数据，保障量化过程不引入未来数据。
@@ -111,30 +121,31 @@ ts.get_hist_data('600848')      #一次性获取全部日k线数据
 
 ## 1.2. **使用爬虫抓取**
 
-
 手动写爬虫进行抓取， 首先需要确定数据来源， 较为主流的财经数据平台有**新浪财经**， **东方财富**， **网易财经**等。 接下来针对若干平台， 分析抓取的过程以及可能遇到的问题；
 
 ### 1.2.1. **新浪财经**
 
-**获取所有股票代码**（这里只考虑沪深A股）
+#### 1.2.1.1. **获取所有股票代码**（这里只考虑沪深A股）
 
 新浪财经的数据地址为[http://vip.stock.finance.sina.com.cn/q/go.php/vIR_CustomSearch/index.phtml](http://vip.stock.finance.sina.com.cn/q/go.php/vIR_CustomSearch/index.phtml), 通过切换页面可以发现， 地址栏的url的参数发生了变化，变化的规律为：`p=n`, `n`为当前页码， 而股票代码和股票名称， 通过`F12`打开开发者工具, 表单中的值均可定位到， 应该可以通过爬虫抓取所有股票的基本信息， 通过新浪财经抓取股票的代码我这里没有写， 暂先略过；
 
-**获取日线数据**
+#### 1.2.1.2. **获取日线数据**
 
 在新浪财经数据中心， 我并没有找到**交易数据**的表格， 要查看某只股票的**日线** / **分线**只能通过点击某只股票进到[详情页](https://finance.sina.com.cn/realstock/company/sh601789/nc.shtml)(而url中的股票代码对应着不同的股票)， 而新浪财经的数据并非以表格的形式展示， 而是通过图表展示， 鼠标移动时通过`JavaScript`更新日期及当前股票的数据信息；那么直接抓取网页是无法获取到数据的， 现在的思路是分析js文件， 找到鼠标移动时监听到的事件， 查明js是如何更新数据的， js的数据从哪里提取，以此来抓取信息;
 
 首先， 通过页面元素审查可以发现， 分时线是通过`HTML5`的`canvas`绘制的， 在Sources找相关的js文件， 可以找到`paintSth.js`文件， 由于在鼠标移动时会更新页面元素， 所以可以直接在文件中查找`mousemove`， 找到了相关代码如下:
 
-```
+```js
 C = this.interactCanvas,
 ...
 ...
 ...
 C.addEventListener("mousemove", o),
 ```
+
 可以看到Canvas加了一个mousemove的监听器， 执行`o`, 再查找`o()`, 可以找到如下代码：
-```
+
+```js
 function o() {
     if (!c) {
         var t = document.createElement("canvas");
@@ -143,21 +154,23 @@ function o() {
     return c
 }
 ```
+
 这里`c`又是一个未知量， 所以应该继续检索`c`的信息， 由于关联的js文件较多， 这种做法过于费时费力， 爬取新浪财经的交易数据应该不是明智的选择；
 
-**换种思路**， 既然可以浏览， 那么使用`selenium`就有可能， `selenium`可以进行自动化测试， 让鼠标在固定位置移动， 同时抓取更新的信息， 这种做法是可行的， 我也尝试着做了， 由于这一方法过于不实用， 源码略；
+**换种思路**， 既然可以浏览， 那么使用 `selenium` 就有可能， `selenium` 可以进行自动化测试， 让鼠标在固定位置移动， 同时抓取更新的信息， 这种做法是可行的， 我也尝试着做了， 由于这一方法过于不实用， 源码略；
 
 **这种做法局限性太大**， 首先， **效率过低**， 这是很致命的一个缺陷， 除此之外， 由于移动导致的像素不同， 可能会出现数据遗漏或重复；最后， 新浪财经默认只显示一定日期的交易数据， 要查看更早的需要手动拖动进度条， 这就使得`selenium`的操作误差更大；
 
 综上所述， 在新浪抓取交易数据是挺不容易的事情；
 
-**获取财务数据**
+#### 1.2.1.3. **获取财务数据**
 
 新浪的财务数据在[http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/profit/index.phtml?p=1](http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/profit/index.phtml?p=2), 这应该是爬虫抓取中喜闻乐见的格式了，换页不需要通过ajax， 所以抓取的时候只需要设定好抓取的总页数， 循环抓取页面再解析即可， 接下来即可直接进行代码的编写（未亲自验证）
 
 ### 1.2.2. **网易财经**
 
-**获取所有股票代码**（这里只考虑沪深A股）
+#### 1.2.2.1. **获取所有股票代码**（这里只考虑沪深A股）
+
 网易财经的所有沪深A股数据位于[http://quotes.money.163.com/old/#query=EQA&DataType=HS_RANK&sort=PERCENT&order=desc&count=24&page=0](http://quotes.money.163.com/old/#query=EQA&DataType=HS_RANK&sort=PERCENT&order=desc&count=24&page=0), 从`url`来看， 换页通过url传参即可改变了， 但是实际操作可以发现， 点击换页时`url`中的`page`并不会改变， 但改变`url`中的`page`参数， 当前页面序号会改变；但这不意味着可以像[1.2.1. **新浪财经**](#121-新浪财经)中爬取新浪财经一样， 枚举url的page参数来爬取所有信息；因为股票数据是异步加载的， 直接抓取无法获取到值；
 
 对于网易财经，由于点击换页时页面的url没有更新，所以应该是使用了`Ajax`或`Js`来更新数据， 通过`F12`调起开发者工具， 在`Network`选型卡中， 筛选`XHR`, 每当点击换页时， 就会有新的`XHR`， 分析这些`XHR`的url可以发现，只有`page`值在改变：
@@ -193,14 +206,15 @@ No. | key_name | meaning
 19 | VOLUME | 成交量
 20 | WB | 委比
 
+&emsp;&emsp;所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607`， 所以如下请求：
 
-&emsp;&emsp;所以可以直接抓取这个url来获取相关的数据， 更有趣的是， 请求参数中有个`count`参数， 决定了数据的数量， 所以我尝试将`count`设置成全部数量, 查看网易财经沪深A股， 网易的编号最后一只为`3607	`， 所以如下请求：
+```js
+'http://quotes.money.163.com/hs/service/diyrank.php?host=http%3A%2F%2Fquotes.money.163.com%2Fhs%2Fservice%2Fdiyrank.php&page=0&query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2CFIVE_MINUTE%2COPEN%2CYESTCLOSE%2CHIGH%2CLOW%2CVOLUME%2CTURNOVER%2CHS%2CLB%2CWB%2CZF%2CPE%2CMCAP%2CTCAP%2CMFSUM%2CMFRATIO.MFRATIO2%2CMFRATIO.MFRATIO10%2CSNAME%2CCODE%2CANNOUNMT%2CUVSNEWS&sort=PERCENT&order=desc&count=3607&type=query'
 ```
-http://quotes.money.163.com/hs/service/diyrank.php?host=http%3A%2F%2Fquotes.money.163.com%2Fhs%2Fservice%2Fdiyrank.php&page=0&query=STYPE%3AEQA&fields=NO%2CSYMBOL%2CNAME%2CPRICE%2CPERCENT%2CUPDOWN%2CFIVE_MINUTE%2COPEN%2CYESTCLOSE%2CHIGH%2CLOW%2CVOLUME%2CTURNOVER%2CHS%2CLB%2CWB%2CZF%2CPE%2CMCAP%2CTCAP%2CMFSUM%2CMFRATIO.MFRATIO2%2CMFRATIO.MFRATIO10%2CSNAME%2CCODE%2CANNOUNMT%2CUVSNEWS&sort=PERCENT&order=desc&count=3607&type=query
-```
+
 即可返回所有`json`格式的数据， 然后再进行解析， 并写入文件， 完整代码如下：
 
-```
+```py
 import urllib
 import json
 import csv
@@ -269,18 +283,20 @@ if __name__ == '__main__':
     controller.get_data()
 ```
 
+#### 1.2.2.2. **获取日线数据**
 
-**获取日线数据**
 网易财经的日线交易数据可在[http://quotes.money.163.com/trade/lsjysj_601318.html#06f01](http://quotes.money.163.com/trade/lsjysj_601318.html#06f01)查看， 需要将`url`中的`601318`替换成相应的股票代码， 在这个页面没有换页按钮， 仅显示若干条数据， 但是在数据表的右上角有个`下载数据`的链接， 点击后， 需要勾选需要下载的字段， 点击下载后会下载一个`code.csv`文件， 所以要做的就是抓取下载的真实`url`， 按`F12`打开开发者工具， 点击下载按钮后， 在控制台看到如下提示：
 
 ![网易财经下载数据控制台捕获](https://catsjuice.cn/index/src/markdown/stock/201904271817.png)
 其中已经包含了请求的真实地址， 即：
 
+```js
+"http://quotes.money.163.com/service/chddata.html?code=0601318&start=20070301&end=20190426&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"
 ```
-http://quotes.money.163.com/service/chddata.html?code=0601318&start=20070301&end=20190426&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"
-```
+
 而想要搞清楚url的参数， 可以转到`submit`的文件， 这里即`b.667271.min.js:1`, 这是一个压缩的js文件， 格式化后， 在最后可以找到如下关键代码：
-```
+
+```js
 submit: function() {
     var e = n.value;
     if (e) e = e.replace(/-/g, "");
@@ -300,6 +316,7 @@ submit: function() {
     location.href = c
 }
 ```
+
 能够清楚地看到url的拼接过程， 具体参数如下：
 编号 | 参数 | 解释 | 规范
 :--: | :--: | :--: | :--:
@@ -308,7 +325,8 @@ submit: function() {
 3 | fields | 即需要下载的字段 | 使用`;`分割，如：`TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP` 具体意义不作详述
 4 | code | 股票代码 | 关于股票代码， 网易财经的股票代码在传参时， 如果是以`6`开头的股票， 需要在前面加`0`, 而以`0`和`3`开头的股票需要在前面加`1`,如：`1000333`, `1300001`, `0601318`
 接下来是做抓取， 抓取就是根据已经获取的**股票代码**， 枚举股票代码并下载对应的日线数据， 仅需注意每次循环最好使用`time.sleep(random.random()*2)`， 否则可能因操作频繁被拒绝访问；下面是部分源代码（注： 这里源代码中的股票代码是实时获取的， 抓取的是**股城网**, 因为只需要抓取股票代码即可）:
-```
+
+```py
 import random
 import time
 
@@ -366,30 +384,28 @@ if __name__ == '__main__':
     controller = Controller(url=url, kline_filepath=kline_filepath, codelist_filepath=codelist_filepath, date='20190428')
     controller.start()
 ```
+
 项目地址: [https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
 
 `或者:`
-```
-git clone https://github.com/CatsJuice/netease-stock-day-line.git
-``` 
 
-**网易财经财务数据**
+```bash
+git clone https://github.com/CatsJuice/netease-stock-day-line.git
+```
+
+#### 1.2.2.3. **网易财经财务数据**
 
 网页url为[http://quotes.money.163.com/f10/zycwzb_601318.html#01c01](http://quotes.money.163.com/f10/zycwzb_601318.html#01c01)， 可以看到同交易日线数据一样， 这里有一个下载数据的按钮， 对应`盈利能力`， `偿还能力`等， 而这里直接通过开发者工具审查元素， 即可看到超链接的`href`：`/service/zycwzb_601318.html?type=report&part=ylnl`， 很快， 就能拿到完整的`url`， 然后操作同网易日线数据， 项目地址同样位于[https://github.com/CatsJuice/netease-stock-day-line](https://github.com/CatsJuice/netease-stock-day-line))
 
-
-
-
 ### 1.2.3. **东方财富**
 
-**股票信息列表**
+#### 1.2.3.1. **股票信息列表**
 
 因为没找到合适的页面， 实时资金流向排行[http://data.eastmoney.com/zjlx/detail.html](http://data.eastmoney.com/zjlx/detail.html)爬取所有沪深A股代码， 这里不作详述；
 
-**交易数据, 财务数据**
+#### 1.2.3.2. **交易数据, 财务数据**
 
 东方财富的交易数据/财务数据我也尝试过使用爬虫爬取， 但是还是要走不少弯路的， 而且可能最后还没成功， 首先， 东方财富的数据页面和其他平台一样， 股票代码在url中， 如[http://data.eastmoney.com/bbsj/yjbb/600175.html](http://data.eastmoney.com/bbsj/yjbb/600175.html)， 直接爬取， 或者使用开发者工具定位页面元素会发现：
-
 
 ![东方财富页面元素审查](https://catsjuice.cn/index/src/markdown/stock/201904271950.png "东方财富页面元素审查")
 
@@ -398,9 +414,6 @@ git clone https://github.com/CatsJuice/netease-stock-day-line.git
 ![东方财富js加密](https://catsjuice.cn/index/src/markdown/stock/201904271953.png "东方财富js加密")
 
 在这个名字特别明显直白的`js`文件`load_table_data_pc.js?201606021831`中, 可以看到加密， 解密的方法， 这也使得爬取成为可能， 但是太大费周章暂不考虑。
-
-
-
 
 # 2. **热点获取**
 
@@ -411,7 +424,8 @@ git clone https://github.com/CatsJuice/netease-stock-day-line.git
 这一页面的新闻列表不是通过Ajax异步加载的， 可以直接抓取， 而页码由url中`cgnjj_x`(x为页码)决定，抓取过程较为简单；这里统计的思路是， 将所有的要闻简述拼接成字符串（以`;`分隔并写入txt作备份）， 然后利用`jieba`库分词并统计词频， 项目地址：[https://github.com/CatsJuice/eastmoney-yaowen-keyword](https://github.com/CatsJuice/eastmoney-yaowen-keyword)
 
 也可以直接`clone`至本地
-```
+
+```bash
 git clone https://github.com/CatsJuice/eastmoney-yaowen-keyword.git
 ```
 
@@ -424,6 +438,7 @@ git clone https://github.com/CatsJuice/eastmoney-yaowen-keyword.git
 分析**连续处于低换手率**的股票， 脱离低换手率后， 出现**连续处于高换手率**， 判断2个时期的**收盘价**均价， 分析满足这一特征的股票的价格是否会上涨；
 
 程序设计的思路如下
+
 - 迭代日线数据文件
 - 判断是否是连续高换手率
 - 判断是否在连续高换手率后出现连续低换手率
@@ -432,7 +447,8 @@ git clone https://github.com/CatsJuice/eastmoney-yaowen-keyword.git
 **注:** 因为数据文件是按日期的倒序排序的， 所以分析迭代时， 先判断是否出现连续高换手率
 
 核心代码如下：
-```
+
+```py
 high = []
 low = []
 for row in arr:
@@ -450,7 +466,7 @@ for row in arr:
         continue
     rate = float(rate)
     # 4. 判断是否是 高 换手率
-    if rate >= self.border_rate:   
+    if rate >= self.border_rate:
         # 4.3 判断是否是: 连续高 ->连续低 -> 结束连续低
         if len(low) >= self.min_days:
             # 符合条件， 写入
@@ -469,7 +485,7 @@ for row in arr:
     else:
         # 4.2 前面是连续高换手率， 地换手率写入
         low.append(row)
-    
+
     # 判断日期是否已达到最后
     if row[0] <= self.end_date:
         # 判断是否满足条件
@@ -503,7 +519,8 @@ No | param | type | meaning | demo
 完整项目地址：[https://github.com/CatsJuice/low-switch-hand-rate](https://github.com/CatsJuice/low-switch-hand-rate)
 
 或者：
-```
+
+```bash
 git clone https://github.com/CatsJuice/low-switch-hand-rate.git
 ```
 
@@ -516,7 +533,7 @@ git clone https://github.com/CatsJuice/low-switch-hand-rate.git
 ### 3.2.2. **指标用法**
 
 > `1`. 当`CCI`指标曲线在`+100`线～`-100`线的常态区间里运行时,`CCI`指标参考意义不大，可以用KDJ等其它技术指标进行研判。
-> 
+>
 > `2`. 当`CCI`指标曲线从上向下突破`+100`线而重新进入常态区间时，表明市场价格的上涨阶段可能结束，将进入一个比较长时间的震荡整理阶段，应及时平多做空。
 >
 > `3`. 当`CCI`指标曲线从上向下突破`-100`线而进入另一个非常态区间（超卖区）时，表明市场价格的弱势状态已经形成，将进入一个比较长的寻底过程，可以持有空单等待更高利润。如果`CCI`指标曲线在超卖区运行了相当长的一段时间后开始掉头向上，表明价格的短期底部初步探明，可以少量建仓。`CCI`指标曲线在超卖区运行的时间越长，确认短期的底部的准确度越高。
@@ -531,24 +548,29 @@ git clone https://github.com/CatsJuice/low-switch-hand-rate.git
 
 关于公式有两种：
 
-**公式一：**
-```
+#### **公式一：**
+
+```php
 TYP:=(HIGH+LOW+CLOSE)/3;
 CCI:(TYP-MA(TYP,N))/(0.015*AVEDEV(TYP,N));
 ```
+
 该公式来自`通达信`， 含义如下：
-```
+
+```php
 TYP赋值:(最高价+最低价+收盘价)/3
 输出CCI:(TYP-TYP的N日简单移动平均)/(0.015*TYP的N日平均绝对偏差)
 ```
-**公式二：**
+
+#### **公式二：**
 
 ![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png?20100504_2 "cci")
 
 该公式摘录于[https://www.joinquant.com/view/community/detail/219](https://www.joinquant.com/view/community/detail/219)
 
 程序中我采用的是**公式二**， 生成的 `CCI` 指标追加到日线文件中， 在相应日期后增加 `CCI` 的值， 在 `Python` 中对 `csv` 文件进行增加列的方法， 在网上可找到的方法较少， 以下为一个提供了多种解决方案的， 较为完善的链接: [https://stackoverflow.com/questions/11070527/how-to-add-a-new-column-to-a-csv-file](https://stackoverflow.com/questions/11070527/how-to-add-a-new-column-to-a-csv-file), 我使用的是 `pandas` 库， 关键代码如下：
-```
+
+```py
 df = pd.read_csv(filename, encoding='gbk')
 df['cci'] = ''
 for index, row in pd.iterrows():
@@ -557,17 +579,16 @@ for index, row in pd.iterrows():
 
 ### 3.2.4. **程序设计**
 
-**总共设计了4个类如下：**
+**总共设计了4个类如下**:
 
 - `CCIAnalyze(object)` &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;CCI分析类
-    - `analyze_all(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析所有股票
-    - `analyze_one(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析一只股票
-    - `test_buy(self)` &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略一：在下文说明）
-    - `test_buy_2(self)` &emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略二：在下文说明）
+  - `analyze_all(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析所有股票
+  - `analyze_one(self)` &emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;分析一只股票
+  - `test_buy(self)` &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略一：在下文说明）
+  - `test_buy_2(self)` &emsp;&emsp;&emsp;&emsp;&ensp;//&ensp;&ensp;测试购买（策略二：在下文说明）
 - `CCICalculate(object)` &emsp;&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;根据[3.2.3. **公式**](#323-公式)中的公式二计算CCI
 - `CCICalculate_2(object)`&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;根据[3.2.3. **公式**](#323-公式)中的公式一计算CCI
 - `BuyInfo(object)`&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;//&ensp;&ensp;购买辅助类
-
 
 ### 3.2.5. **参数说明**
 
@@ -581,7 +602,8 @@ id | param | type | default | mean | demo | necessary
 > 项目地址： [https://github.com/CatsJuice/stock-cci](https://github.com/CatsJuice/stock-cci)
 
 或者`clone`:
-```
+
+```bash
 git clone https://github.com/CatsJuice/stock-cci
 ```
 
@@ -589,11 +611,11 @@ git clone https://github.com/CatsJuice/stock-cci
 
 在进行测试购买时， 采用的策略有2种，如下：
 
-**策略一：**
+**策略一**：
 
 对应`CCIAnalyze(object)`中的`test_buy(self)`方法， 当`CCI`向下突破`-100`时， 后一交易日**买入**， 等到`CCI`向上突破`100`时， 后一交易日**卖出**(由于计算出当日的CCI， 当日已不可**买入/卖出**，所以计算后一交易日**买入/卖出**)
 
-**策略二：**
+**策略二**：
 
 对应`CCIAnalyze(object)`中的`test_buy_2(self)`方法, 当`CCI`向下突破`-100`时， 继续观察， 等到向下达到第一个峰值时， 后一交易日**买入**，等到`CCI`向上突破`100`时， 继续观察， 等到向上达到第一个峰值时， 后一交易日**卖出**（和策略一一样， 计算出`CCI`后只能后一日买入， 而策略二不同的是， 要判断达到第一个峰值， 必须确定峰值后一日CCI降低， 所以测试时， 购买的是峰值的后`第2个`交易日）
 
@@ -608,7 +630,7 @@ git clone https://github.com/CatsJuice/stock-cci
 胡立阳根据股票的`价量关系`对股票进行打分（第21招）， 而其打分的依据如下：
 
 > **当日个股表现：**
-> 
+>
 >（1）价涨量增 `+2` 分
 >
 >（2）价涨量缩 `+1` 分
@@ -618,7 +640,6 @@ git clone https://github.com/CatsJuice/stock-cci
 >（4）价跌量缩 `-1` 分
 >
 > 每日累计评分。你只要连续计算一个星期,以最高分或者是评分稳定增加的作为你投资的第一选择,因为那只个股具备了“价量配合”的上涨条件
-
 
 ### 3.3.2. **程序设计**
 
@@ -632,12 +653,11 @@ git clone https://github.com/CatsJuice/stock-cci
 
 [点击此处查看流程图原图](https://catsjuice.cn/index/src/markdown/stock/mind201904281842.jpeg)
 
-
 参数详情如下表
 
 id | param | type | mean | demo
 :--: | :--: | :--: | :--: | :--:
-1 | `prefix` | str | 网易财经日线数据文件前缀 | `'F:\\files\\sharesDatas\\kline\\' `
+1 | `prefix` | str | 网易财经日线数据文件前缀 | `'F:\\files\\sharesDatas\\kline\\'`
 2 | `date_now` |str| 最新数据的第一个日期, 对应爬取的最新数据表第一行的日期 | `'2019-04-26'` ; Format( `yyyy-mm-dd` )
 3 | `days` | int | 加分的天数 | `5`
 4 | `calculate_days` | int | 要统计的天数 | `20`
@@ -647,9 +667,8 @@ id | param | type | mean | demo
 
 ![胡立阳打分标准盈利率](https://catsjuice.cn/index/src/markdown/stock/201904281250.png "胡立阳打分标准盈利率")
 
-
 > **键值说明:**
-> 
+>
 > `date`: 统计的日期
 >
 > `rate_low`: 打分最低的盈利几率
@@ -663,10 +682,156 @@ id | param | type | mean | demo
 项目地址： [https://github.com/CatsJuice/stock-price-num-score](https://github.com/CatsJuice/stock-price-num-score)
 
 直接`clone`:
-```
+
+```bash
 git clone https://github.com/CatsJuice/stock-price-num-score.git
 ```
 
-
-
 ## 3.4. **移动平均线分析**
+
+### 3.4.1. **概念**
+
+> 移动平均线，`Moving Average`，简称 `MA`， `MA` 是用统计分析的方法，将一定时期内的证券价格（指数）加以平均，并把不同时间的平均值连接起来，形成一根 `MA` ，用以观察证券价格变动趋势的一种技术指标。
+
+常见的均线有5日均线（MA5）, 十日均线（MA10）， 二十日均线（MA20）， 三十日均线（MA30）， 六十日均线（MA60）
+
+### 3.4.2. **计算**
+
+在这里， 我的计算方法是简单地计算 n 日内的 **收盘价** 的`算数平均值`
+
+### 3.4.3. **程序设计**
+
+**基本思路如下**：
+
+- 定义要计算的几日（假设为n）均线数组， 进行遍历计算
+- 迭代文件列表
+- 打开某个文件， 选取 n 行， 计算这n行的 `收盘价` 总和
+- 迭代 `csv` 文件的每一行， 每次迭代， 将上述收盘价的总和减去首行， 追加新的一行
+- 计算 `ma` 并写入原文件
+
+和之前计算cci不同， 这里不再做多余的迭代， 以此能大大提高效率
+
+### 3.4.4. **参数说明**
+
+id | param | type | mean | demo | necessary
+:--: | :--: |:--: |:--: |:--: | :--:
+1  | `file_path_prefix` |`str`| 日线数据文件目录前缀 | `'H:\\sharesDatas\\kline\\'` | `true`
+2 | `code` | `int` / `str` |股票代码| `'000001'` | `false`
+3 | `end_date` | `str` |  最早的日期(截止日期) | `'2019-01-01'` | `false`
+4 | `all_n` | `Array` | 要计算的几日ma 数组 | `[5,10]` | `false`
+
+### 3.4.5. **购买策略分析**
+
+#### 3.4.5.1. **策略一： '老太太选股法' 一根均线打天下**
+
+购买的策略较为简单， 收盘价低于均线即买入， 将收盘价作为买入价格（假设第二个交易日开盘即买入）， 收盘价高于均线即卖出， 同样将收盘价作为卖出价格
+
+#### 3.4.5.2. **策略二：'黄金交叉'和'死亡交叉'**
+
+**'黄金交叉'** 和 **'死亡交叉'** 的概念来自 **日均线** 的百度百科（[https://baike.baidu.com/item/%E6%97%A5%E5%9D%87%E7%BA%BF/8784586?fr=aladdin](https://baike.baidu.com/item/%E6%97%A5%E5%9D%87%E7%BA%BF/8784586?fr=aladdin)）
+
+> 1、”黄金交叉”
+当10日均线由下往上穿越30日均线，形成10日均线在上，30日均线在下时，其交叉点就是黄金交叉，黄金交叉是多头的表现，出现黄金交叉后，后市会有一定的涨幅空间，这是进场的最佳时机。
+>
+>2、”死亡交叉”
+当10日均线由上往下穿越30日均线，形成30日均线在上，10日均线在下时，其交点称之为”死亡交叉”，”死亡交叉”预示空头市场来临，股市将下跌此时是出场的最佳时机。
+
+### 3.4.6. **分析结果**
+
+#### 3.4.6.1. **老太太选股法**
+
+对于'老太太选股法'， 我分别测试了5日均线和10日均线（由于20日数据较大， 电脑处理太慢， 暂时不考虑）， 最终得到的结果为：
+
+`ma5` 的盈利几率为`63.3132%`; 而 `ma10` 的盈利几率为`67.0026%`
+
+以下是某次运行的截图：
+
+![老太太选股测试结果](https://catsjuice.cn/index/src/markdown/stock/201905072238.png '老太太选股测试结果')
+
+运行结果中， 可以发现, 无论是盈利或是亏损， 金额基本都在1元以内， 可见这一策略 首先具有一定的科学性， 同时风险也不是很大， 但盈利金额较高的可能性很小；
+
+对此， 我增加了结果判断， 统计亏损 / 盈利 超过 1 元的比例, 以下是结果：
+
+**对于 `ma5`:**
+
+![ma5的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905072303.png 'ma5的详情结果')
+
+**对于 `ma10`:**
+
+![ma10的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905072311.png 'ma10的详情结果')
+
+**对于 `ma20`:**
+
+![ma20的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081102.png 'ma20的详情结果')
+
+**对于 `ma30`:**
+
+![ma30的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081112.png 'ma30的详情结果')
+
+**对于 `ma60`:**
+
+![ma60的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081409.png 'm60的详情结果')
+
+从更详细的结果可以看到， 无论盈利或亏损， 超过 1 元的概率都不大， 但是亏损的时候超过 1 元的概率比盈利大； 更有趣的是， 当 ma的计算天数越多， 盈利的几率越大， 由于一般看盘软件中仅提供了上述这些均线（`MA5`, `MA10`, `MA20`, `MA30`, `MA60`）, 所以这里不再多更高的天数进行测试； 虽然天数越大时， 盈利几率越高， 但是从更细节数据可以看到， 盈利的情况大于1元的概率始终在 `10% ~ 15%`, 而亏损时超过 1 元的概率却表现出和天数正相关的趋势， 并且从 `24%` 跳跃到高达 `50%`
+
+#### 3.4.6.2. **'黄金交叉'和'死亡交叉'**
+
+运行结果如图：
+
+!['黄金交叉'和'死亡交叉'结果](https://catsjuice.cn/index/src/markdown/stock/201905081642.png?20190508 '"黄金交叉"和"死亡交叉"结果')
+
+对于这个结果的确是非常出乎意料， 这个盈利率低得感觉好像可以作为一个反向指标使用；
+
+对于这个结果， 首先应该怀疑是自己的代码逻辑出现了问题， 于是我检查了关键代码如下：
+
+```py
+# 前一天 ma30 > ma10 , 今天ma10 >= ma30
+if prev_row is not None and prev_row['ma30'] > prev_row['ma10'] and row['ma10'] >= row['ma30']:
+    # 买入
+
+...
+...
+
+# 前一天 ma30 < ma10 , 今天ma10 <= ma30
+if prev_row['ma30'] < prev_row['ma10'] and row['ma10'] <= row['ma30']:
+    # 卖出
+```
+
+关键代码部分好像并没有什么逻辑问题， 但是不排除其他部分出现问题， 由于这个指标的预期过于不符， 我试着尝试了交换 **'黄金交叉'**和**'死亡交叉'**， 修改上述关键代码如下(其实就是把所有大小判断符号反置)：
+
+```py
+# 前一天 ma30 < ma10 , 今天ma10 <= ma30
+if prev_row is not None and prev_row['ma30'] < prev_row['ma10'] and row['ma10'] <= row['ma30']:
+    # 买入
+
+...
+...
+
+# 前一天 ma30 > ma10 , 今天ma10 >= ma30
+if prev_row['ma30'] > prev_row['ma10'] and row['ma10'] >= row['ma30']:
+    # 卖出
+```
+
+以下为运行结果：
+
+!['黄金交叉'和'死亡交叉'反向结果](https://catsjuice.cn/index/src/markdown/stock/201905081711.png?20190508 '"黄金交叉"和"死亡交叉"反向结果')
+
+这时候盈利率可以说是马马虎虎还算过得去了， 但是盈利率却还是不如 ‘老太太选股法’
+
+### 3.4.7. **Source Code**
+
+项目地址：[https://github.com/CatsJuice/line-of-ma](https://github.com/CatsJuice/line-of-ma)
+
+直接 `clone` ：
+
+```bash
+git clone https://github.com/CatsJuice/line-of-ma.git
+```
+
+## 3.5. **分时数据 成交手分析**
+
+### 3.5.1. **基本概念**
+
+成交手指的是每笔买卖流动的股票数量，现行股票交易所用`手`方便表示成交数量，一手相当于股票一百股，各类炒股软件中的成交量一般用`手`表示
+
+### 3.5.2. ****
