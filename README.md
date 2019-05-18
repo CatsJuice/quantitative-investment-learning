@@ -5,7 +5,7 @@
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-16 11:00`
+上一次更新： `2019-05-18 14:01`
 
 **CONTENTS:**
 
@@ -105,7 +105,7 @@ ts.get_hist_data('600848')      #一次性获取全部日k线数据
 
 **结果显示**:
 
-![历史行情接结果返回](https://catsjuice.cn/index/src/markdown/stock/201904262245.png "历史行情结果")
+![历史行情接结果返回](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904262245.png "历史行情结果")
 
 > `Tushare`返回的绝大部分的数据格式都是`pandas DataFrame`类型，非常便于用`pandas` / `NumPy` / `Matplotlib`进行数据分析和可视化
 
@@ -179,11 +179,11 @@ function o() {
 
 对于网易财经，由于点击换页时页面的url没有更新，所以应该是使用了`Ajax`或`Js`来更新数据， 通过`F12`调起开发者工具， 在`Network`选型卡中， 筛选`XHR`, 每当点击换页时， 就会有新的`XHR`， 分析这些`XHR`的url可以发现，只有`page`值在改变：
 
-![XHR URL](https://catsjuice.cn/index/src/markdown/stock/201904271217.jpg)
+![XHR URL](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904271217.jpg)
 
 直接复制`Request URL`并使用浏览器访问， 可以得到`json`格式的数据， 但是可以看到中文通过`Unicode`编码了， 在获取后， 可以通过`s.decode('unicode_escape')`来解码；接下来就是对`json`解析并提取需要的信息了， json格式如下：
 
-![网易财经股票JSON格式](https://catsjuice.cn/index/src/markdown/stock/201904271328.png)
+![网易财经股票JSON格式](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904271328.png)
 
 在`list`中有`[0]`到`[23]`共24条数据， 对应请求中的参数`count=24`， 关于字段名的解释， 以下为我的分析：
 
@@ -291,7 +291,7 @@ if __name__ == '__main__':
 
 网易财经的日线交易数据可在[http://quotes.money.163.com/trade/lsjysj_601318.html#06f01](http://quotes.money.163.com/trade/lsjysj_601318.html#06f01)查看， 需要将`url`中的`601318`替换成相应的股票代码， 在这个页面没有换页按钮， 仅显示若干条数据， 但是在数据表的右上角有个`下载数据`的链接， 点击后， 需要勾选需要下载的字段， 点击下载后会下载一个`code.csv`文件， 所以要做的就是抓取下载的真实`url`， 按`F12`打开开发者工具， 点击下载按钮后， 在控制台看到如下提示：
 
-![网易财经下载数据控制台捕获](https://catsjuice.cn/index/src/markdown/stock/201904271817.png)
+![网易财经下载数据控制台捕获](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904271817.png)
 其中已经包含了请求的真实地址， 即：
 
 ```js
@@ -411,11 +411,11 @@ git clone https://github.com/CatsJuice/netease-stock-day-line.git
 
 东方财富的交易数据/财务数据我也尝试过使用爬虫爬取， 但是还是要走不少弯路的， 而且可能最后还没成功， 首先， 东方财富的数据页面和其他平台一样， 股票代码在url中， 如[http://data.eastmoney.com/bbsj/yjbb/600175.html](http://data.eastmoney.com/bbsj/yjbb/600175.html)， 直接爬取， 或者使用开发者工具定位页面元素会发现：
 
-![东方财富页面元素审查](https://catsjuice.cn/index/src/markdown/stock/201904271950.png "东方财富页面元素审查")
+![东方财富页面元素审查](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904271950.png "东方财富页面元素审查")
 
 对应的数据是乱码的， 而如果继续挖掘其js文件， 是可以找到有加密的函数的，如下图所示：
 
-![东方财富js加密](https://catsjuice.cn/index/src/markdown/stock/201904271953.png "东方财富js加密")
+![东方财富js加密](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904271953.png "东方财富js加密")
 
 在这个名字特别明显直白的`js`文件`load_table_data_pc.js?201606021831`中, 可以看到加密， 解密的方法， 这也使得爬取成为可能， 但是太大费周章暂不考虑。
 
@@ -503,9 +503,9 @@ for row in arr:
 
 简易流程图如下：
 
-![流程图](https://catsjuice.cn/index/src/markdown/stock/mind201905012008.jpg "换手率程序设计流程图")
+![流程图](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/mind201905012008.jpg "换手率程序设计流程图")
 
-[点此查看流程图原图](https://catsjuice.cn/index/src/markdown/stock/mind201905012008_origin.png)
+[点此查看流程图原图](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/mind201905012008_origin.png)
 
 程序可调整参数如下：
 
@@ -518,7 +518,7 @@ No | param | type | meaning | demo
 
 程序运行结果截图如下：201905012052.png
 
-![screenshot](https://catsjuice.cn/index/src/markdown/stock/201905012052.png)
+![screenshot](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905012052.png)
 
 完整项目地址：[https://github.com/CatsJuice/low-switch-hand-rate](https://github.com/CatsJuice/low-switch-hand-rate)
 
@@ -568,7 +568,7 @@ TYP赋值:(最高价+最低价+收盘价)/3
 
 #### 3.2.3.2. **公式二：**
 
-![cci公式](https://catsjuice.cn/index/src/markdown/stock/201905022239.png?20100504_2 "cci")
+![cci公式](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905022239.png?20100504_2 "cci")
 
 该公式摘录于[https://www.joinquant.com/view/community/detail/219](https://www.joinquant.com/view/community/detail/219)
 
@@ -625,7 +625,7 @@ git clone https://github.com/CatsJuice/stock-cci
 
 经过若干次测试，分别使用的数据是`2019-01-01 ~ 2019-04-26`, `2018-01-01 ~ 2019-04-26`, `2017-01-01 ~ 2019-04-26`, 测试的结果, 购买策略一的收益率大概为`56%`, 可见这个指标有一定依据， 但是盈利的几率不够高; 而策略二的收益率大概为`57%`, 较策略一高一点， 但是依旧无法将其作为购买的唯一指标， 以下是某次运行结果的部分截图：
 
-![CCI指标测试截图](https://catsjuice.cn/index/src/markdown/stock/201905031521.jpg "CCI指标测试截图")
+![CCI指标测试截图](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905031521.jpg "CCI指标测试截图")
 
 ## 3.3. **《胡立阳股票投资100招》** 由“价量关系”来为个股打分数
 
@@ -653,9 +653,9 @@ git clone https://github.com/CatsJuice/stock-cci
 
 程序流程图如下：
 
-![StockScore_2.py简易流程图](https://catsjuice.cn/index/src/markdown/stock/mind201904281842.jpg "StockScore_2.py简易流程图")
+![StockScore_2.py简易流程图](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/mind201904281842.jpg "StockScore_2.py简易流程图")
 
-[点击此处查看流程图原图](https://catsjuice.cn/index/src/markdown/stock/mind201904281842.jpeg)
+[点击此处查看流程图原图](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/mind201904281842.jpeg)
 
 参数详情如下表
 
@@ -669,7 +669,7 @@ id | param | type | mean | demo
 
 ### 3.3.3. **结果**
 
-![胡立阳打分标准盈利率](https://catsjuice.cn/index/src/markdown/stock/201904281250.png "胡立阳打分标准盈利率")
+![胡立阳打分标准盈利率](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201904281250.png "胡立阳打分标准盈利率")
 
 > **键值说明:**
 >
@@ -750,7 +750,7 @@ id | param | type | mean | demo | necessary
 
 以下是某次运行的截图：
 
-![老太太选股测试结果](https://catsjuice.cn/index/src/markdown/stock/201905072238.png '老太太选股测试结果')
+![老太太选股测试结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905072238.png '老太太选股测试结果')
 
 运行结果中， 可以发现, 无论是盈利或是亏损， 金额基本都在1元以内， 可见这一策略 首先具有一定的科学性， 同时风险也不是很大， 但盈利金额较高的可能性很小；
 
@@ -758,23 +758,23 @@ id | param | type | mean | demo | necessary
 
 **对于 `ma5`:**
 
-![ma5的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905072303.png 'ma5的详情结果')
+![ma5的详情结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905072303.png 'ma5的详情结果')
 
 **对于 `ma10`:**
 
-![ma10的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905072311.png 'ma10的详情结果')
+![ma10的详情结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905072311.png 'ma10的详情结果')
 
 **对于 `ma20`:**
 
-![ma20的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081102.png 'ma20的详情结果')
+![ma20的详情结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905081102.png 'ma20的详情结果')
 
 **对于 `ma30`:**
 
-![ma30的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081112.png 'ma30的详情结果')
+![ma30的详情结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905081112.png 'ma30的详情结果')
 
 **对于 `ma60`:**
 
-![ma60的详情结果](https://catsjuice.cn/index/src/markdown/stock/201905081409.png 'm60的详情结果')
+![ma60的详情结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905081409.png 'm60的详情结果')
 
 从更详细的结果可以看到， 无论盈利或亏损， 超过 1 元的概率都不大， 但是亏损的时候超过 1 元的概率比盈利大； 更有趣的是， 当 ma的计算天数越多， 盈利的几率越大， 由于一般看盘软件中仅提供了上述这些均线（`MA5`, `MA10`, `MA20`, `MA30`, `MA60`）, 所以这里不再多更高的天数进行测试； 虽然天数越大时， 盈利几率越高， 但是从更细节数据可以看到， 盈利的情况大于1元的概率始终在 `10% ~ 15%`, 而亏损时超过 1 元的概率却表现出和天数正相关的趋势， 并且从 `24%` 跳跃到高达 `50%`
 
@@ -782,7 +782,7 @@ id | param | type | mean | demo | necessary
 
 运行结果如图：
 
-!['黄金交叉'和'死亡交叉'结果](https://catsjuice.cn/index/src/markdown/stock/201905081642.png?20190508 '"黄金交叉"和"死亡交叉"结果')
+!['黄金交叉'和'死亡交叉'结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905081642.png?20190508 '"黄金交叉"和"死亡交叉"结果')
 
 对于这个结果的确是非常出乎意料， 这个盈利率低得感觉好像可以作为一个反向指标使用；
 
@@ -818,7 +818,7 @@ if prev_row['ma30'] > prev_row['ma10'] and row['ma10'] >= row['ma30']:
 
 以下为运行结果：
 
-!['黄金交叉'和'死亡交叉'反向结果](https://catsjuice.cn/index/src/markdown/stock/201905081711.png?20190508 '"黄金交叉"和"死亡交叉"反向结果')
+!['黄金交叉'和'死亡交叉'反向结果](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905081711.png?20190508 '"黄金交叉"和"死亡交叉"反向结果')
 
 这时候盈利率可以说是马马虎虎还算过得去了， 但是盈利率却还是不如 ‘老太太选股法’
 
@@ -842,7 +842,7 @@ git clone https://github.com/CatsJuice/line-of-ma.git
 
 当某日开盘初出现集中的大量 买入/卖出 ， 即成交手出现连续峰值的情况（大概如下图所示情形）， 分析该股在当日的趋势
 
-![形态示例](https://catsjuice.cn/index/src/markdown/stock/20190516102436.png "形态示例")
+![形态示例](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/20190516102436.png "形态示例")
 
 ### 3.5.3. **程序设计**
 
@@ -861,7 +861,11 @@ no. | param              | type          | mean                 | format       |
 
 ### 3.5.5. **结果及分析**
 
-运算时间较长， 暂无结果
+以下为不区分买盘或卖盘， 倍数为 2 时， 当天前后均价变化是否上涨的结果：
+
+![3.5.5](https://github.com/CatsJuice/quantitative-investment-learning/tree/imgs/md_imgs/201905181224.png "3.5.5结果")
+
+而只考虑买盘时， 这个几率为34%, 只考虑卖盘时几率为47%， 可见开盘初集中的成交量不一定会导致今日价格走上升的趋势，但在这个部分的程序设计中， 分析得不是很到位， 首先实际中没法考虑当天后面的成交量情况， 所以更稳妥的方法应该是计算 **前一交易日的平均成交量** ， 而在判断这这股票是否处于上涨的趋势时， 简单判断今日的前后均价也不是最不合理的。
 
 ### 3.5.6. **Source Code**
 
@@ -872,3 +876,7 @@ no. | param              | type          | mean                 | format       |
 ```bash
 git clone https://github.com/CatsJuice/stock-volume-analyze.git
 ```
+
+## 3.6. **MACD**
+
+### 3.6.1. **基本概念**
