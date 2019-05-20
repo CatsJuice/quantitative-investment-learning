@@ -5,10 +5,11 @@
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-19 23:12`
+上一次更新： `2019-05-20 13:46`
 
 **CONTENTS:**
 
+- [quantitative-investment-learning](#quantitative-investment-learning)
 - [1. **数据抓取**](#1-数据抓取)
   - [1.1. **通过第三方数据平台直接调用api**](#11-通过第三方数据平台直接调用api)
     - [1.1.1. **TuShare(挖地兔)**](#111-tushare挖地兔)
@@ -72,8 +73,8 @@
       - [3.6.1.2. **MACD 金叉**](#3612-macd-金叉)
       - [3.6.1.3. **MACD 死叉**](#3613-macd-死叉)
     - [3.6.2. **程序设计**](#362-程序设计)
-
-
+      - [3.6.2.1. **数据计算**](#3621-数据计算)
+      - [3.6.2.2. **数据分析**](#3622-数据分析)
 
 # 1. **数据抓取**
 
@@ -901,6 +902,93 @@ git clone https://github.com/CatsJuice/stock-volume-analyze.git
 
 #### 3.6.1.3. **MACD 死叉**
 
-> `DIFF` 由上向下突破 `DEA`,为**卖出信号**
+> `DIF` 由上向下突破 `DEA`,为**卖出信号**
 
 ### 3.6.2. **程序设计**
+
+#### 3.6.2.1. **数据计算**
+
+【MACD公式】
+
+以下为通达信的公式：
+
+```js
+DIF:EMA(CLOSE,SHORT)-EMA(CLOSE,LONG);
+DEA:EMA(DIF,MID);
+MACD:(DIF-DEA)*2,COLORSTICK;
+```
+
+需要的变量参数为 `SHORT` , `LONG` , `MID`， 在通达信中默认分别为 `12` , `26` , `9`;
+要计算 `MACD` ，关键在于求 `EMA`（指数移动平均值）, 其公式如下：
+
+![EMA公式](https://catsjuice.cn/index/src/markdown/stock/20190520111714.png "EMA公式")
+
+其中， `α` 为平滑指数， 一般取 `2 / ( N + 1 )`
+
+该公式是依赖于前一日的递归的计算，最大的问题便是第一天的 `EMA[yesterday]` 无法求得， 在程序设计时， 我将它设置为当日`收盘价`,
+再求 `DIF`, 第一天的 `DIF` 就变成了 `0` （当日收盘价 - 当日收盘价）, 而求 `DEA` （即 DIF 的 EMA） 时，第一天所需的 `DEA[yesterday]` 同样不知道， 将其设置为 `DIF` ( 即 0 )。
+
+【数据存储】
+
+在了解公式后， 便可迭代文件进行带入计算， 计算结果这里我采用的是将其写入原文件， 在列末尾追加新的 5 列：
+
+- `EMA26` (26根据传参而定)
+- `EMA12` (12根据传参而定)
+- `DIF`
+- `DEA`
+- `MACD`
+
+【数据验证】
+
+完成计算后， 有必要对计算结果进行验证, 这里， 我简单写了一个输出来进行简单验证， 该部分代码如下：
+
+```py
+def verify_calculate(self, code):
+    try:
+        df = pd.read_csv(self.file_prefix + str(code) + '.csv', encoding='gbk')
+    except:
+        print('文件%s.csv打开失败' % code)
+        return
+    df = df[df.日期 > self.end_date]
+    df = df[::-1]
+    mid = []
+    dates = []
+    difs = []
+    deas = []
+    macds = []
+    color_macd = []
+    for index, row in df.iterrows():
+        mid.append(0)
+        dates.append(row['日期'])
+        difs.append(row['DIF'])
+        deas.append(row['DEA'])
+        macds.append(row['MACD'])
+        if row['MACD'] > 0:
+            color_macd.append('red')
+        else:
+            color_macd.append('green')
+    # 绘制图表
+    fig = plt.figure(dpi=128, figsize=(100, 6))
+    plt.plot(dates, mid, c='blue')
+    plt.plot(dates, difs, c='yellow')
+    plt.plot(dates, deas, c='black')
+    plt.bar(dates, macds, color=color_macd)
+    plt.xticks(fontsize=5)
+    plt.xlabel('', fontsize=5)
+    fig.autofmt_xdate()
+    plt.show()
+```
+
+在对股票 `'000002'` 进行验证， 验证结果如下（上图为通达信MACD截图， 下图为程序输出的图片， 时间为`2018-01-01` ~ `2019-04-26`）：
+
+![2018-01-01 ~ 20019-04-26, 000002 macd验证](https://catsjuice.cn/index/src/markdown/stock/20190520.jpg "2018-01-01 ~ 20019-04-26, 000002 macd验证")
+
+可以看到图形基本一致， 但是同样对股票 `000001` 进行验证， 结果如下：
+
+![2018-01-01 ~ 20019-04-26, 000001 macd验证](https://catsjuice.cn/index/src/markdown/stock/201905201329.jpg "2018-01-01 ~ 20019-04-26, 000001 macd验证")
+
+此时， 两图形基本没有重合， 原因是因为计算 `MACD` 时， 第一天的 `EMA`并不是前一天计算的，同样 `DEA` 也是， 而这里数据只计算了 `2018-01-01 ~ 2010-04-26`, 所以前面基本一致的时候， 是因为第一日刚好相近导致后面计算偏差不大， 对此， 应该不设置截止日期以保证数据的可靠性。
+
+#### 3.6.2.2. **数据分析**
+
+等待完整的数据计算结果
