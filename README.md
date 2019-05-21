@@ -5,11 +5,10 @@
 
 `CatsJuice` 编辑于 `2019-4-26`
 
-上一次更新： `2019-05-20 13:46`
+上一次更新： `2019-05-21 16:04`
 
 **CONTENTS:**
 
-- [quantitative-investment-learning](#quantitative-investment-learning)
 - [1. **数据抓取**](#1-数据抓取)
   - [1.1. **通过第三方数据平台直接调用api**](#11-通过第三方数据平台直接调用api)
     - [1.1.1. **TuShare(挖地兔)**](#111-tushare挖地兔)
@@ -75,6 +74,10 @@
     - [3.6.2. **程序设计**](#362-程序设计)
       - [3.6.2.1. **数据计算**](#3621-数据计算)
       - [3.6.2.2. **数据分析**](#3622-数据分析)
+    - [3.6.3. **参数说明**](#363-参数说明)
+    - [3.6.4. **function注释**](#364-function注释)
+    - [3.6.5. **结果分析**](#365-结果分析)
+    - [3.6.6. **Source Code**](#366-source-code)
 
 # 1. **数据抓取**
 
@@ -420,7 +423,7 @@ git clone https://github.com/CatsJuice/netease-stock-day-line.git
 
 东方财富的交易数据/财务数据我也尝试过使用爬虫爬取， 但是还是要走不少弯路的， 而且可能最后还没成功， 首先， 东方财富的数据页面和其他平台一样， 股票代码在url中， 如[http://data.eastmoney.com/bbsj/yjbb/600175.html](http://data.eastmoney.com/bbsj/yjbb/600175.html)， 直接爬取， 或者使用开发者工具定位页面元素会发现：
 
-![东方财富页面元素审查](https://catsjuice.cn/index/src/markdown/stock/201904271950.png "东方财富页面元素审查")
+![东方财富页面元素审查](https://catsjuice.cn/index/src/markdown/stock/201904271950.jpg "东方财富页面元素审查")
 
 对应的数据是乱码的， 而如果继续挖掘其js文件， 是可以找到有加密的函数的，如下图所示：
 
@@ -928,6 +931,30 @@ MACD:(DIF-DEA)*2,COLORSTICK;
 该公式是依赖于前一日的递归的计算，最大的问题便是第一天的 `EMA[yesterday]` 无法求得， 在程序设计时， 我将它设置为当日`收盘价`,
 再求 `DIF`, 第一天的 `DIF` 就变成了 `0` （当日收盘价 - 当日收盘价）, 而求 `DEA` （即 DIF 的 EMA） 时，第一天所需的 `DEA[yesterday]` 同样不知道， 将其设置为 `DIF` ( 即 0 )。
 
+【性能优化之多线程】
+
+由于数据量较大， 在这里我尝试使用 Python 的多线程进行分析， 添加了一个 `calculate_all_by_thread` 的方法， 接收 `1` 个参数（thread_num）即需要的线程数， 然后根据线程数动态创建线程， 将文件划分为等分的块分别计算， 创建线程部分的代码如下：
+
+```py
+def calculate_all_by_thread(self, thread_num):
+    file_list = os.listdir(self.file_prefix)
+    file_count = len(file_list)
+    offset = file_count / thread_num
+    offset = math.ceil(offset)
+    threads = []
+    for i in range(thread_num):
+        start = i * offset
+        end = (i+1) * offset if (i+1) * offset < file_count else -1
+        thread = threading.Thread(target=self.calculate_block, args=(start, end))
+        threads.append(thread)
+    for t in threads:
+        t.setDaemon(True)
+        t.start()
+    t.join()
+```
+
+这里我使用的 2 个线程进行计算， 实际测试速度虽然不是单线程的 2 倍，但是计算的时间上是有所优化的。
+
 【数据存储】
 
 在了解公式后， 便可迭代文件进行带入计算， 计算结果这里我采用的是将其写入原文件， 在列末尾追加新的 5 列：
@@ -987,8 +1014,116 @@ def verify_calculate(self, code):
 
 ![2018-01-01 ~ 20019-04-26, 000001 macd验证](https://catsjuice.cn/index/src/markdown/stock/201905201329.jpg "2018-01-01 ~ 20019-04-26, 000001 macd验证")
 
-此时， 两图形基本没有重合， 原因是因为计算 `MACD` 时， 第一天的 `EMA`并不是前一天计算的，同样 `DEA` 也是， 而这里数据只计算了 `2018-01-01 ~ 2010-04-26`, 所以前面基本一致的时候， 是因为第一日刚好相近导致后面计算偏差不大， 对此， 应该不设置截止日期以保证数据的可靠性。
+此时， 两图形基本没有重合， 原因是因为计算 `MACD` 时， 第一天的 `EMA`并不是前一天计算的，同样 `DEA` 也是， 而这里数据只计算了 `2018-01-01 ~ 2010-04-26`, 所以前面基本一致的时候， 是因为第一日刚好相近导致后面计算偏差不大， 对此， 应该不设置截止日期以保证数据的可靠性, 我将时间设置到了 `2014-01-01`， 重新验证 `000001` 得到如下：
+
+![2018-01-01 ~ 20019-04-26, 000001 macd验证(修改后)](https://catsjuice.cn/index/src/markdown/stock/201905211027.jpg "2018-01-01 ~ 20019-04-26, 000001 macd验证(修改后)")
+
+然后再随机抽取一直股票进行验证， 如下为 `600702` 的结果
+
+![2018-01-01 ~ 20019-04-26, 600702 macd验证](https://catsjuice.cn/index/src/markdown/stock/201905211033.jpg "2018-01-01 ~ 20019-04-26, 600702 macd验证")
 
 #### 3.6.2.2. **数据分析**
 
-等待完整的数据计算结果
+这里主要是对 `MACD` 的分析， 所以以上计算的数据实际上只要用到 `MACD` , 对 `MACD` 柱满足以下形态的股票进行分析：
+
+![MACD形态](https://catsjuice.cn/index/src/markdown/stock/20190521151217.png "MACD形态")
+
+该形态需满足以下特点：
+
+- 出现连续的红色块（MACD > 0）
+- 紧接着出现连续蓝色块（MACD < 0）
+- 蓝色块小于第一个红色块
+- 蓝色块后面跟着一个红色块， 且后一红色块大于前一红色块
+
+在程序设计时， 使用的是迭代数据行， 通过 `if` 判断， 来定位上述的 3 个块， 在第三块大于第一块时即为符合条件的形态；大致思路是， 定义 3 个变量来标记 3 块的合计值：
+
+- red_1
+- green_1
+- red_2
+
+判断三个块的条件分别为：
+
+- 块 1 ：`green_1 == 0 and red_2 == 0`
+- 块 2 ：`red_1 != 0 and red_2 == 0`
+- 块 3 ：`red_1 != 0 and red_2 != 0 and green_1 != 0`
+
+### 3.6.3. **参数说明**
+
+no. | param              | type          | mean                 | format       | default      | necessary | demo
+:---|--------------------|---------------|----------------------|--------------|--------------|-----------|------
+1   | `file_prefix`      | `str`         | 日线文件前缀          | /            | `None`        | `True`   | `'F:\\files\\sharesDatas\\kline\\'`
+2   | `end_date`         | `str`         | 截止日期              |`yyyy-mm-dd`  | '0000-00-00'  | `False`  | `'2019-01-01'`
+3   | `short`            | `int`         | 短期的天数            | /            | `12`          |  `False` | `12`
+4   | `long`             | `int`         | 长期的天数            | /            | `26`          | `False`  |  `26`
+5   | `mid`              | `int`         | 计算`DEA`时， `DIF`的`EMA`天数| /    | `9`           | `False`   | `9`
+6   | `count_max`        | `int`         | 判断后面的多少天涨跌情况| /           | `5`            | `False`  | `10`
+7   | `count_border`     | `int`         | 设置最大天数内至少多少天涨才符合  | /  | `3`           | `False` | `6`
+
+### 3.6.4. **function注释**
+
+- `calculate_noe`
+  - 计算单只股票的 `MACD` 、 `DIF` 、 `EMA` 、 `DEA`
+  - 需要参数：
+    - `code`: 股票的代码
+  - 返回值：
+    - `None`
+- `calculate_all_by_thread`
+  - 通过多线程计算所有股票
+  - 需要参数：
+    - `thread_num`: 线程数量
+  - 返回值:
+    - `None`
+- `calculate_block`:
+  - 计算指定代码块的股票
+  - 需要参数：
+    - `start`：块下标开始
+    - `end`: 块下标结束
+  - 返回值：
+    - `None`
+- `verify_calculate`
+  - 验证计算的结果
+  - 需要参数：
+    - `code`: 股票的代码
+  - 返回值：
+    - `None`
+- `analyze_macd_one`:
+  - 分析单只股票 的 `macd`
+  - 需要参数：
+    - `code`: 股票的代码
+  - 返回值：
+    - `None`
+- `analyze_macd_by_thread`:
+  - 通过多线程分析所有股票
+  - 需要参数：
+    - `thread_num`: 线程数量
+  - 返回值:
+    - `None`
+- `analyze_block`:
+  - 分析指定代码块的股票
+  - 需要参数：
+    - `start`：块下标开始
+    - `end`: 块下标结束
+  - 返回值：
+    - `None`
+- `show_res`:
+  - 输出分析结果并写入相关文件
+  - 需要参数：`None`
+  - 返回值： `None`
+
+### 3.6.5. **结果分析**
+
+【某次结果截图】
+
+![MACD分析结果截图](https://catsjuice.cn/index/src/markdown/stock/20190521155326.png "MACD分析结果截图")
+
+计算 MACD 时候的传参均为默认， 即通达信公式中的默认值， 对上述情况进行分析得到的结果是， 后 10 天内至少 6 天比符合条件时涨了的比例约为 55% ， 而如果将参数调整为  5 天内至少 3 天， 则比例降低到约47%， 而如果不是 MACD 的值计算有误的话， 可见这个 `MACD` 的指标并不是很可靠， 但可以调整计算 `MACD` 的参数的值
+
+### 3.6.6. **Source Code**
+
+项目地址： [https://github.com/CatsJuice/MACD-Analyze](https://github.com/CatsJuice/MACD-Analyze)
+
+直接 clone:
+
+```bash
+git clone https://github.com/CatsJuice/MACD-Analyze.git
+```
